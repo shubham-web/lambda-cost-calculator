@@ -1,13 +1,13 @@
 {
-	"name": "My App",
-	"short_name": "MyApp",
+	"name": "Lambda Cost Calculator",
+	"short_name": "λ Calc",
 	"start_url": ".",
 	"lang": "en-IN",
 	"display": "standalone",
 	"background_color": "#ffffff",
 	"theme_color": "#46bc62",
 	"orientation": "portrait-primary",
-	"description": "MyApp is my app. 🤷‍♂️",
+	"description": "A Simple Calculator to Estimate AWS Lambda Functions Cost",
 	"icons": [
 		{
 			"src": "favicon.ico",

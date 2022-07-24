@@ -32,6 +32,11 @@ const GlobalStyle = createGlobalStyle`
         margin: 0;
         font-family: ${theme.font.main}, ${theme.font.fallBacks};
     }
+    body{
+        background: #000000;
+        color: white;
+        min-height: 100vh;
+    }
 
     a {
         color: inherit;
@@ -41,6 +46,36 @@ const GlobalStyle = createGlobalStyle`
     h1,h2,h3,h4,h5,h6{
         margin: 0;
     }
+
+    
+    input[type="checkbox"],
+    input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        z-index: -1;
+    }
+        
+    input[type="radio"] + label::before {
+        border-radius: 1em;
+    }
+    
+        
+    /* Checked */
+    input[type=checkbox]:checked + label,
+    input[type=radio]:checked + label {
+        padding-left: 1em;
+        color: white;
+    }
+
+        
+    input[type=checkbox]:checked + label:before,
+    input[type=radio]:checked + label:before {
+        top: 0;
+        width: 100%;
+        height: 2em;
+        background: #081f2a;
+    }
+
 `;
 
 export default MyApp;
