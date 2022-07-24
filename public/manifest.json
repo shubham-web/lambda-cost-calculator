@@ -1,0 +1,28 @@
+{
+	"name": "My App",
+	"short_name": "MyApp",
+	"start_url": ".",
+	"lang": "en-IN",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#46bc62",
+	"orientation": "portrait-primary",
+	"description": "MyApp is my app. 🤷‍♂️",
+	"icons": [
+		{
+			"src": "favicon.ico",
+			"sizes": "32x32",
+			"type": "image/x-icon"
+		},
+		{
+			"src": "logo192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "logo512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	]
+}

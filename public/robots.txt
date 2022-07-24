@@ -1,0 +1,7 @@
+User-agent: *
+
+# Disallow routes for crawlers
+User-agent: *
+Disallow: /something-not-to-crawl
+
+# Sitemap: https://example.com/sitemap.xml (remove hash from the front, if you've sitemap)
