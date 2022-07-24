@@ -14,21 +14,21 @@ export default function Document() {
 				<meta name="author" content={author} />
 
 				{/* Twitter */}
-				<meta property="twitter:title" content={siteTitle} />
-				<meta property="twitter:description" content={description} />
-				<meta property="twitter:image" content={new URL(domain).origin.concat("/card.png")} />
-				<meta property="twitter:url" content={new URL(domain).origin} />
-				<meta property="twitter:card" content="summary_large_image" />
-				<meta property="twitter:site" content={social.twitter} />
-				<meta property="twitter:creator" content={social.twitter} />
+				<meta name="twitter:title" content={siteTitle} />
+				<meta name="twitter:description" content={description} />
+				<meta name="twitter:image" content={new URL(domain).origin.concat("/card.png")} />
+				<meta name="twitter:url" content={new URL(domain).origin} />
+				<meta name="twitter:card" content="summary_large_image" />
+				<meta name="twitter:site" content={social.twitter} />
+				<meta name="twitter:creator" content={social.twitter} />
 
 				{/* Facebook */}
-				<meta property="og:title" content={siteTitle} />
-				<meta property="og:site_name" content={siteTitle} />
-				<meta property="og:description" content={description} />
-				<meta property="og:url" content={new URL(domain).origin} />
-				<meta property="og:image" content={new URL(domain).origin.concat("/card.png")} />
-				<meta property="og:type" content="website" />
+				<meta name="og:title" content={siteTitle} />
+				<meta name="og:site_name" content={siteTitle} />
+				<meta name="og:description" content={description} />
+				<meta name="og:url" content={new URL(domain).origin} />
+				<meta name="og:image" content={new URL(domain).origin.concat("/card.png")} />
+				<meta name="og:type" content="website" />
 
 				{/* Fonts */}
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
