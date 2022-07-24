@@ -66,7 +66,8 @@ const Wrapper = styled.div`
 	border-radius: 1rem;
 	@media (max-width: 900px) {
 		justify-self: center;
-		width: max-content;
+		width: 100%;
+		text-align: center;
 	}
 `;
 const Cost = styled.span`

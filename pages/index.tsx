@@ -3,39 +3,15 @@ import { ChangeEvent, useState } from "react";
 import styled, { css } from "styled-components";
 import CoolBox from "../components/CoolBox";
 import Heading from "../components/Heading";
+import Links from "../components/Links";
 import Result from "../components/Result";
 import config from "../data/config";
-import { getCost, validateInputs } from "../utils";
-
-// prettier-ignore
-const memoryList = ["128","512","1024",	"1536","2048","3072","4096","5120","6144","7168","8192","9216","10240"];
-
-const durationHints: Array<{ label: string; ms: number }> = [
-	{
-		label: "1 Sec",
-		ms: 1000,
-	},
-	{
-		label: "1 Min",
-		ms: 1000 * 60,
-	},
-	{
-		label: "3 Min",
-		ms: 1000 * 60 * 3,
-	},
-	{
-		label: "5 Min",
-		ms: 1000 * 60 * 5,
-	},
-];
-
-const COST_PER_REQUEST = 0.0000002; // in dollars
-const COST_PER_GB_S = { x86: 0.0000166667, arm: 0.0000133334 };
+import { validateInputs } from "../utils";
 
 const Home: NextPage = () => {
 	const [execution, setExecution] = useState("1000");
 	const [architecture, setArchitecture] = useState<"x86" | "arm">("x86");
-	const [memory, setMemory] = useState(memoryList[0]);
+	const [memory, setMemory] = useState(config.memoryList[0]);
 	const [duration, setDuration] = useState("3000");
 
 	return (
@@ -55,7 +31,7 @@ const Home: NextPage = () => {
 							/>
 							<br />
 							<br />
-							<Label>Architectures</Label>
+							<Label>Architecture</Label>
 							<RadioGroup>
 								<input
 									type="radio"
@@ -80,7 +56,7 @@ const Home: NextPage = () => {
 								onChange={(e: ChangeEvent<HTMLSelectElement>) => setMemory(e.target.value)}
 								value={memory}
 							>
-								{memoryList.map((mb) => {
+								{config.memoryList.map((mb) => {
 									return <option key={mb}>{mb} MB</option>;
 								})}
 							</Input>
@@ -95,7 +71,7 @@ const Home: NextPage = () => {
 							/>
 							<DurationHints>
 								<span>or click</span>
-								{durationHints.map((d) => {
+								{config.durationHints.map((d) => {
 									return (
 										<HintButton
 											onClick={() => setDuration(d.ms.toString())}
@@ -110,7 +86,7 @@ const Home: NextPage = () => {
 						</Form>
 						<Result
 							inputs={validateInputs({
-								rates: { execution: COST_PER_GB_S[architecture], request: COST_PER_REQUEST },
+								rates: { execution: config.costPerGBs[architecture], request: config.costPerRequest },
 								memory: memory,
 								executions: execution,
 								avgDuration: duration,
@@ -118,6 +94,7 @@ const Home: NextPage = () => {
 						/>
 					</Content>
 				</CoolBox>
+				<Links />
 			</Wrapper>
 		</>
 	);
@@ -125,13 +102,14 @@ const Home: NextPage = () => {
 
 const Wrapper = styled.div`
 	position: relative;
-	padding: 3rem 0 0;
+	padding: 3rem 0 3rem;
 	display: grid;
 	gap: 2rem;
-	width: 50%;
-	width: min(960px, 90%);
+	width: 100%;
+	max-width: 900px;
 	margin: 0 auto;
 	z-index: 2;
+	padding: 1rem;
 `;
 const Form = styled.div``;
 const Content = styled.div`
@@ -141,12 +119,13 @@ const Content = styled.div`
 	gap: 1rem;
 	@media (max-width: 900px) {
 		grid-template-columns: 1fr;
+		padding: 2rem;
 	}
 `;
 const BlurredCircle = styled.div`
 	position: absolute;
-	top: 40%;
-	left: 20%;
+	top: 18%;
+	left: 28%;
 	transform: translate(-50%, -50%);
 	width: 400px;
 	height: 400px;
@@ -155,6 +134,7 @@ const BlurredCircle = styled.div`
 	border-radius: 50%;
 	filter: blur(100px) brightness(0.3);
 	z-index: 1;
+	pointer-events: none;
 `;
 const Input = styled.input`
 	background: black;
@@ -164,10 +144,13 @@ const Input = styled.input`
 	font-size: 1.5rem;
 	padding: 0.5rem 0.8rem;
 	border-radius: 0.35rem;
-	max-width: 100%;
+	width: 80%;
 	border: 2px solid transparent;
 	&:focus {
 		border-color: #2d6a86;
+	}
+	@media (max-width: 900px) {
+		width: 100%;
 	}
 `;
 const Label = styled.label`

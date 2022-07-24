@@ -10,6 +10,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 		<>
 			<Head>
 				<title>{config.siteTitle}</title>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			</Head>
 			<GlobalStyle />
 			<Component {...pageProps} />
@@ -37,7 +38,6 @@ const GlobalStyle = createGlobalStyle`
     body{
         background: #000000;
         color: white;
-        min-height: 100vh;
     }
 
     a {
@@ -76,6 +76,12 @@ const GlobalStyle = createGlobalStyle`
         width: 100%;
         height: 2em;
         background: #081f2a;
+    }
+
+    @media (max-width: 550px) {
+        html{
+            font-size: 14px;
+        }
     }
 
 `;
