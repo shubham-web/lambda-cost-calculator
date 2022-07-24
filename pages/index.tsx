@@ -2,29 +2,41 @@ import type { NextPage } from "next";
 import { ChangeEvent, useState } from "react";
 import styled, { css } from "styled-components";
 import CoolBox from "../components/CoolBox";
+import Heading from "../components/Heading";
+import Result from "../components/Result";
 import config from "../data/config";
+import { getCost, validateInputs } from "../utils";
 
-const memoryList = [
-	"128",
-	"512",
-	"1024",
-	"1536",
-	"2048",
-	"3072",
-	"4096",
-	"5120",
-	"6144",
-	"7168",
-	"8192",
-	"9216",
-	"10240",
+// prettier-ignore
+const memoryList = ["128","512","1024",	"1536","2048","3072","4096","5120","6144","7168","8192","9216","10240"];
+
+const durationHints: Array<{ label: string; ms: number }> = [
+	{
+		label: "1 Sec",
+		ms: 1000,
+	},
+	{
+		label: "1 Min",
+		ms: 1000 * 60,
+	},
+	{
+		label: "3 Min",
+		ms: 1000 * 60 * 3,
+	},
+	{
+		label: "5 Min",
+		ms: 1000 * 60 * 5,
+	},
 ];
 
+const COST_PER_REQUEST = 0.0000002; // in dollars
+const COST_PER_GB_S = { x86: 0.0000166667, arm: 0.0000133334 };
+
 const Home: NextPage = () => {
-	const [execution, setExecution] = useState(1000);
+	const [execution, setExecution] = useState("1000");
 	const [architecture, setArchitecture] = useState<"x86" | "arm">("x86");
 	const [memory, setMemory] = useState(memoryList[0]);
-	const [duration, setDuration] = useState(3000);
+	const [duration, setDuration] = useState("3000");
 
 	return (
 		<>
@@ -39,7 +51,7 @@ const Home: NextPage = () => {
 								type="number"
 								min={1}
 								value={execution}
-								onChange={(e) => setExecution(parseInt(e.target.value))}
+								onChange={(e) => setExecution(e.target.value)}
 							/>
 							<br />
 							<br />
@@ -79,35 +91,31 @@ const Home: NextPage = () => {
 								type="number"
 								min={1}
 								value={duration}
-								onChange={(e) => setDuration(parseInt(e.target.value))}
+								onChange={(e) => setDuration(e.target.value)}
 							/>
+							<DurationHints>
+								<span>or click</span>
+								{durationHints.map((d) => {
+									return (
+										<HintButton
+											onClick={() => setDuration(d.ms.toString())}
+											key={d.ms}
+											active={duration === d.ms.toString()}
+										>
+											{d.label}
+										</HintButton>
+									);
+								})}
+							</DurationHints>
 						</Form>
-						<Result>
-							<Heading secondary>Results</Heading>
-							<br />
-							<ResultTable>
-								<tbody>
-									<tr>
-										<td>Request costs:</td>
-										<td>
-											<Cost>$0.40/month</Cost>
-										</td>
-									</tr>
-									<tr>
-										<td>Execution costs:</td>
-										<td>
-											<Cost>$0.40/month</Cost>
-										</td>
-									</tr>
-									<tr>
-										<td>Total:</td>
-										<td>
-											<Cost>$0.40/month</Cost>
-										</td>
-									</tr>
-								</tbody>
-							</ResultTable>
-						</Result>
+						<Result
+							inputs={validateInputs({
+								rates: { execution: COST_PER_GB_S[architecture], request: COST_PER_REQUEST },
+								memory: memory,
+								executions: execution,
+								avgDuration: duration,
+							})}
+						/>
 					</Content>
 				</CoolBox>
 			</Wrapper>
@@ -125,26 +133,12 @@ const Wrapper = styled.div`
 	margin: 0 auto;
 	z-index: 2;
 `;
-const Heading = styled.h1<{ secondary?: boolean }>`
-	color: var(--color-primary);
-	text-align: center;
-	font-size: 2rem;
-
-	${(props) =>
-		props.secondary &&
-		css`
-			color: rgba(255, 255, 255, 0.8);
-			font-weight: normal;
-			font-size: 1.8rem;
-		`}
-`;
 const Form = styled.div``;
 const Content = styled.div`
 	padding: 2.5rem 3rem;
 	display: grid;
 	grid-template-columns: 1.25fr 1fr;
 	gap: 1rem;
-	align-items: center;
 	@media (max-width: 900px) {
 		grid-template-columns: 1fr;
 	}
@@ -214,29 +208,30 @@ const RadioGroup = styled.div`
 		}
 	}
 `;
-const Result = styled.div`
-	background: black;
+
+const DurationHints = styled.div`
+	& > span {
+		opacity: 0.4;
+	}
+	display: flex;
+	gap: 0.25rem;
+	padding: 0.5rem 0;
+`;
+const HintButton = styled.button<{ active: boolean }>`
+	padding: 0.25rem 0.4rem;
+	border-radius: 0.25rem;
+	background: transparent;
 	color: rgb(153, 169, 194);
-	padding: 2rem 2rem;
-	height: max-content;
-	border-radius: 1rem;
-	@media (max-width: 900px) {
-		justify-self: center;
-		width: max-content;
-	}
-`;
-const Cost = styled.span`
-	display: inline-block;
-	background: rgba(255, 255, 255, 0.1);
-	padding: 1rem;
-`;
-const ResultTable = styled.table`
-	width: 100%;
-	border: none;
-	border-collapse: collapse;
-	& td {
-		padding: 0.5rem;
-	}
+	font-size: 0.9rem;
+	border: 2px ridge #2d6a86;
+	cursor: pointer;
+
+	${(props) =>
+		props.active &&
+		css`
+			background: #081f2a;
+			color: white;
+		`}
 `;
 
 export default Home;

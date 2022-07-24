@@ -3,6 +3,7 @@ import Head from "next/head";
 import config from "../data/config";
 import theme from "../data/theme";
 import { createGlobalStyle } from "styled-components";
+import { Toaster } from "react-hot-toast";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
@@ -12,6 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 			</Head>
 			<GlobalStyle />
 			<Component {...pageProps} />
+			<Toaster position="bottom-center" />
 		</>
 	);
 }
